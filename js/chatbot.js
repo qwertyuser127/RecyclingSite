@@ -46,6 +46,19 @@
           "Hey! I'm here to help you recycle smarter. What's on your mind?"
         ]);
       }
+      
+      if (/^(fun|fact)/i.test(q)) {
+        return pick([
+          "Recycling one aluminum can saves enough energy to power a laptop for 3 hours!",
+          "Plastic takes 400+ years to decompose in landfill.",
+          "An average family can recycle 4 pounds of materials annually.",
+          "Making new paper from recycled paper saves 40% of the water used for virgin paper.",
+          "In Malta, over 30% of school recycling is lost due to contamination.",
+          "Recycling steel and tin cans conserves 76% of the energy needed to make new cans.",
+          "One recycled glass bottle can reduce energy use by 40% compared to making a new bottle.",
+          "Textiles are the 4th largest waste stream in most countries."
+        ]);
+      }
 
       if (/^(bye|goodbye|see you|cya|later|ttyl)/i.test(q)) {
         return pick([
