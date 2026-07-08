@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Smart Recycling — Home</title>
+<meta name="description" content="Smart Recycling is a student-built initiative reducing contamination and improving recycling habits in schools, powered by AI, a branching story, and a mini-game.">
+<link rel="icon" type="image/svg+xml" href="icons/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<main id="main">
+
+<section class="hero">
+  <div>
+    <h1>Smart Recycling</h1>
+    <p class="lead">Recycling (but smarter)</p>
+    <p>
+      Smart Recycling is a student-built initiative focused on reducing waste,
+      improving sorting habits, and using AI to make recycling easier for everyone.
+    </p>
+    <a class="btn" href="solution.html">Explore Our Work</a>
+    <div class="next-steps">
+      <a href="#problem">What's the problem?</a>
+      <a href="solution.html">How we fix it</a>
+      <a href="chatbot.html">Ask EcoMind-01</a>
+      <a href="story.html">Play Recylo's story</a>
+    </div>
+  </div>
+</section>
+
+<section id="problem">
+  <h2>The Recycling Problem</h2>
+  <div class="card">
+    <p>
+      Students often mix waste or use the wrong bin. This leads to contamination,
+      meaning recyclable materials get thrown away instead of reused.
+    </p>
+    <div class="grid" style="margin-top:16px;">
+      <div class="card">
+        <h3>Why it matters</h3>
+        <p>Up to 30% of school recycling is lost due to contamination.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="problems15">
+  <h2>Top 15 Recycling Problems (Priority Ranked)</h2>
+  <div class="grid">
+    <div class="card"><h3>1. High Contamination Rates</h3><p>Food residue ruins entire recycling batches.</p></div>
+    <div class="card"><h3>2. Incorrect Bin Sorting</h3><p>Students frequently choose the wrong bin.</p></div>
+    <div class="card"><h3>3. Lack of Recycling Education</h3><p>Most students don't know sorting rules.</p></div>
+    <div class="card"><h3>4. Confusing Bin Labels</h3><p>Icons and colors are unclear.</p></div>
+    <div class="card"><h3>5. Single-Use Plastics</h3><p>Packaging dominates school waste.</p></div>
+    <div class="card"><h3>6. Overflowing Recycling Bins</h3><p>Bins fill up too fast.</p></div>
+    <div class="card"><h3>7. E-Waste Mishandling</h3><p>Chargers and batteries thrown in general waste.</p></div>
+    <div class="card"><h3>8. No Digital Tools</h3><p>No smart assistant or scanner.</p></div>
+    <div class="card"><h3>9. Dirty Recyclables</h3><p>Students don't rinse containers.</p></div>
+    <div class="card"><h3>10. Low Motivation</h3><p>Students don't see recycling impact.</p></div>
+    <div class="card"><h3>11. Inconsistent Rules</h3><p>Different areas follow different rules.</p></div>
+    <div class="card"><h3>12. Hidden Recyclables</h3><p>Foil and cartons confuse people.</p></div>
+    <div class="card"><h3>13. Poor Bin Placement</h3><p>Bins placed in bad locations.</p></div>
+    <div class="card"><h3>14. No Feedback</h3><p>No stats or progress shown.</p></div>
+    <div class="card"><h3>15. Misleading Packaging Labels</h3><p>"Recyclable" logos confuse people.</p></div>
+  </div>
+</section>
+
+<section id="impact">
+  <div class="card">
+    <h2>Impact of Smart Recycling</h2>
+    <p>Our goal: cut contamination by 50% and double correct bin usage in schools.</p>
+  </div>
+</section>
+
+<section id="game">
+  <h2>Play: Eco Catch</h2>
+  <p style="margin-bottom:20px;">Move the recycling bin to catch recyclables and dodge the trash. Score points, keep your hearts, and unlock achievements.</p>
+  <div class="game-wrap">
+    <div class="game-hud">
+      <span id="gameScore">Score: 0</span>
+      <span id="gameHearts">❤️❤️❤️</span>
+    </div>
+    <canvas id="gameCanvas" aria-label="Eco Catch game canvas"></canvas>
+    <div class="game-controls">
+      <button class="btn" id="gameStart" type="button">Start Game</button>
+      <button class="btn secondary" id="gameMute" type="button">🔊 Sound On</button>
+    </div>
+    <div class="game-msg" id="gameMsg" aria-live="polite"></div>
+    <div class="achievements" id="gameAchievements"></div>
+  </div>
+</section>
+
+<section id="next">
+  <div class="card">
+    <h2>What to Do Next</h2>
+    <p>Explore how Smart Recycling comes together across the site.</p>
+    <div class="next-steps">
+      <a href="solution.html">Review our solution</a>
+      <a href="chatbot.html">Try the AI assistant</a>
+      <a href="story.html">Play Recylo's story</a>
+      <a href="quiz.html">Take the quiz</a>
+      <a href="gallery.html">See the gallery</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<script src="js/common.js"></script>
+<script src="js/game.js"></script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Recylo's Story — Smart Recycling</title>
+<link rel="icon" type="image/svg+xml" href="icons/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<main id="main">
+
+<div class="page-head">
+  <h1 style="font-size:clamp(2rem,5vw,3rem);">Recylo's Recycling Adventure</h1>
+  <p>An interactive story by Matteo. Every choice leads Recylo down a different path — there's no wrong way to play.</p>
+</div>
+
+<section>
+  <div class="story-box">
+    <div class="story-character">
+      <img src="icons/ai.svg" alt="Recylo, the recycling robot character">
+      <div>
+        <span>Recylo</span>
+        <div id="storyPathLabel" style="font-size:.8rem;opacity:.7;"></div>
+      </div>
+    </div>
+
+    <div class="story-progress" id="storyProgress">
+      <span></span><span></span><span></span><span></span>
+    </div>
+
+    <form id="storyNameForm" style="margin-bottom:8px;">
+      <label for="storyNameInput" style="display:block;font-weight:600;margin-bottom:8px;">What's your name, Eco Hero?</label>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <input id="storyNameInput" type="text" placeholder="Enter your name" maxlength="30"
+          style="flex:1;min-width:180px;padding:12px;border-radius:12px;border:1px solid rgba(0,0,0,.2);font-family:inherit;font-size:1rem;">
+        <button class="btn" type="submit">Begin the Story</button>
+      </div>
+    </form>
+    <div id="storyIntro" style="display:none;"></div>
+
+    <div id="storyText" style="display:none;"></div>
+    <div class="story-choices" id="storyChoices" style="display:none;"></div>
+
+    <button class="btn secondary" id="storyRestart" type="button" style="display:none;margin-top:16px;">Restart Story</button>
+  </div>
+</section>
+
+</main>
+
+<script src="js/common.js"></script>
+<script src="js/story.js"></script>
+</body>
+</html>

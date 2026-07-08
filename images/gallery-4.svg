@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 260">
+  <rect width="400" height="260" fill="#f1fff6"/>
+  <circle cx="200" cy="130" r="90" fill="none" stroke="#2e7d32" stroke-width="10" stroke-dasharray="18 12"/>
+  <g fill="#2e7d32">
+    <path d="M200 70 L216 100 L184 100 Z"/>
+    <path d="M250 165 L234 195 L226 178 L242 148 Z"/>
+    <path d="M150 165 L166 148 L182 178 L174 195 Z"/>
+  </g>
+  <text x="200" y="240" text-anchor="middle" font-family="Inter,sans-serif" font-size="16" fill="#123" font-weight="700">Eco-friendly waste area</text>
+</svg>

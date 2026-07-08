@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Settings — Smart Recycling</title>
+<link rel="icon" type="image/svg+xml" href="icons/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  /* ===== SETTINGS PAGE STYLES ===== */
+  .settings-page {
+    max-width: 840px;
+    margin: 0 auto;
+  }
+  
+  .settings-page .card {
+    opacity: 1;
+    transform: none;
+    animation: none;
+    padding: 32px;
+  }
+  
+  .settings-page .card::before {
+    display: none;
+  }
+  
+  .settings-section {
+    margin-bottom: 32px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+  
+  .settings-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+  
+  .settings-section h3 {
+    font-size: 1.1rem;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+  }
+  
+  .settings-section h3 .emoji {
+    font-size: 1.4rem;
+  }
+  
+  .setting-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 18px;
+  }
+  
+  .setting-group:last-child {
+    margin-bottom: 0;
+  }
+  
+  .setting-group label {
+    font-weight: 600;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .setting-group .description {
+    font-size: 0.85rem;
+    opacity: 0.65;
+    margin-top: 2px;
+    line-height: 1.4;
+  }
+  
+  .setting-group select,
+  .setting-group input[type="text"],
+  .setting-group input[type="number"] {
+    padding: 10px 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,0.12);
+    font-family: inherit;
+    font-size: 1rem;
+    background: rgba(255,255,255,0.5);
+    transition: 0.2s;
+    width: 100%;
+    max-width: 320px;
+  }
+  
+  body.dark .setting-group select,
+  body.dark .setting-group input[type="text"],
+  body.dark .setting-group input[type="number"] {
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(255,255,255,0.12);
+    color: #f1f1f1;
+  }
+  
+  .setting-group select:focus,
+  .setting-group input:focus {
+    outline: 2px solid var(--blue);
+    outline-offset: 2px;
+  }
+  
+  .setting-group select option {
+    background: #fff;
+    color: #123;
+  }
+  
+  body.dark .setting-group select option {
+    background: #1a1a1a;
+    color: #f1f1f1;
+  }
+  
+  /* ---- TOGGLE SWITCH ---- */
+  .toggle-group {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  
+  .toggle-switch {
+    position: relative;
+    width: 52px;
+    height: 30px;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+  
+  .toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  .toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #ccc;
+    transition: 0.3s;
+    border-radius: 30px;
+  }
+  
+  .toggle-slider::before {
+    content: "";
+    position: absolute;
+    height: 22px;
+    width: 22px;
+    left: 4px;
+    bottom: 4px;
+    background: white;
+    transition: 0.3s;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  }
+  
+  .toggle-switch input:checked + .toggle-slider {
+    background: var(--blue);
+  }
+  
+  .toggle-switch input:checked + .toggle-slider::before {
+    transform: translateX(22px);
+  }
+  
+  .toggle-label {
+    font-weight: 500;
+    font-size: 0.95rem;
+  }
+  
+  /* ---- COLOR PICKER ---- */
+  .color-options {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding: 4px 0;
+  }
+  
+  .color-option {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    cursor: pointer;
+    transition: 0.25s ease;
+    position: relative;
+  }
+  
+  .color-option:hover {
+    transform: scale(1.12);
+  }
+  
+  .color-option.active {
+    border-color: #000;
+    box-shadow: 0 0 0 2px #fff, 0 0 0 4px #000;
+    transform: scale(1.08);
+  }
+  
+  body.dark .color-option.active {
+    border-color: #fff;
+    box-shadow: 0 0 0 2px #1a1a1a, 0 0 0 4px #fff;
+  }
+  
+  .color-option .check {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 800;
+    opacity: 0;
+    transition: 0.2s;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  }
+  
+  .color-option.active .check {
+    opacity: 1;
+  }
+  
+  .color-option[data-color="#4b7cff"] .check { color: #fff; }
+  .color-option[data-color="#2e7d32"] .check { color: #fff; }
+  .color-option[data-color="#e0455f"] .check { color: #fff; }
+  .color-option[data-color="#f39c12"] .check { color: #fff; }
+  .color-option[data-color="#8e44ad"] .check { color: #fff; }
+  .color-option[data-color="#1abc9c"] .check { color: #fff; }
+  
+  /* ---- STATS GRID ---- */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 14px;
+    margin: 12px 0 18px 0;
+  }
+  
+  .stat-item {
+    background: rgba(255,255,255,0.35);
+    padding: 16px;
+    border-radius: 14px;
+    text-align: center;
+    transition: 0.2s;
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+  
+  .stat-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  }
+  
+  body.dark .stat-item {
+    background: rgba(255,255,255,0.04);
+    border-color: rgba(255,255,255,0.06);
+  }
+  
+  .stat-item .number {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--blue);
+    display: block;
+    line-height: 1.2;
+  }
+  
+  body.dark .stat-item .number {
+    color: #7cc6ff;
+  }
+  
+  .stat-item .label {
+    font-size: 0.8rem;
+    opacity: 0.6;
+    display: block;
+    margin-top: 2px;
+  }
+  
+  /* ---- DANGER ZONE ---- */
+  .danger-zone {
+    background: rgba(224, 69, 95, 0.06);
+    border: 1px solid rgba(224, 69, 95, 0.15);
+    border-radius: 16px;
+    padding: 20px;
+    margin-top: 4px;
+  }
+  
+  .danger-zone h4 {
+    color: #e0455f;
+    margin-bottom: 6px;
+    font-size: 1rem;
+  }
+  
+  .danger-zone p {
+    font-size: 0.9rem;
+    opacity: 0.7;
+    margin-bottom: 14px;
+  }
+  
+  .danger-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  
+  .btn.danger {
+    background: #e0455f;
+    color: #fff;
+  }
+  
+  .btn.danger:hover {
+    background: #c0392b;
+    transform: translateY(-2px);
+  }
+  
+  .btn.success {
+    background: var(--green);
+    color: #fff;
+  }
+  
+  .btn.success:hover {
+    background: #1e7e34;
+    transform: translateY(-2px);
+  }
+  
+  .btn.warning {
+    background: #f39c12;
+    color: #fff;
+  }
+  
+  .btn.warning:hover {
+    background: #d68910;
+    transform: translateY(-2px);
+  }
+  
+  .btn.outline {
+    background: transparent;
+    border: 2px solid var(--blue);
+    color: var(--blue);
+  }
+  
+  .btn.outline:hover {
+    background: var(--blue);
+    color: #fff;
+  }
+  
+  /* ---- BUTTON GROUP ---- */
+  .settings-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+  
+  .settings-actions .btn {
+    margin: 0;
+  }
+  
+  /* ---- EXPORT AREA ---- */
+  .export-area {
+    margin-top: 12px;
+    display: none;
+  }
+  
+  .export-area.show {
+    display: block;
+  }
+  
+  .export-area textarea {
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,0.12);
+    font-family: 'Courier New', monospace;
+    font-size: 0.8rem;
+    background: rgba(255,255,255,0.3);
+    resize: vertical;
+    min-height: 140px;
+    line-height: 1.5;
+  }
+  
+  body.dark .export-area textarea {
+    background: rgba(255,255,255,0.04);
+    border-color: rgba(255,255,255,0.08);
+    color: #f1f1f1;
+  }
+  
+  .export-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+  }
+  
+  .export-actions .btn {
+    margin: 0;
+    font-size: 0.85rem;
+    padding: 8px 16px;
+  }
+  
+  /* ---- TOAST ---- */
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    padding: 14px 32px;
+    border-radius: 14px;
+    background: var(--green);
+    color: #fff;
+    font-weight: 600;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    opacity: 0;
+    transition: 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 10000;
+    pointer-events: none;
+    max-width: 90%;
+    text-align: center;
+    font-size: 0.95rem;
+  }
+  
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  
+  .toast.error {
+    background: #e0455f;
+  }
+  
+  .toast.warning {
+    background: #f39c12;
+  }
+  
+  /* ---- RESET LABEL ---- */
+  .reset-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+  }
+  
+  /* ---- RESPONSIVE ---- */
+  @media (max-width: 600px) {
+    .settings-page .card {
+      padding: 20px 16px;
+    }
+    
+    .stat-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    
+    .settings-actions {
+      flex-direction: column;
+    }
+    
+    .settings-actions .btn {
+      width: 100%;
+      text-align: center;
+      justify-content: center;
+    }
+    
+    .danger-actions {
+      flex-direction: column;
+    }
+    
+    .danger-actions .btn {
+      width: 100%;
+      text-align: center;
+      justify-content: center;
+    }
+    
+    .setting-group select,
+    .setting-group input[type="text"],
+    .setting-group input[type="number"] {
+      max-width: 100%;
+    }
+    
+    .color-options {
+      gap: 8px;
+    }
+    
+    .color-option {
+      width: 36px;
+      height: 36px;
+    }
+    
+    .export-actions {
+      flex-direction: column;
+    }
+    
+    .export-actions .btn {
+      width: 100%;
+      text-align: center;
+    }
+    
+    .toast {
+      bottom: 20px;
+      padding: 12px 20px;
+      font-size: 0.85rem;
+      max-width: 95%;
+    }
+  }
+  
+  @media (max-width: 400px) {
+    .stat-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    
+    .stat-item {
+      padding: 12px;
+    }
+    
+    .stat-item .number {
+      font-size: 1.5rem;
+    }
+  }
+  
+  /* ---- SCROLL BAR STYLING ---- */
+  .settings-page ::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .settings-page ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .settings-page ::-webkit-scrollbar-thumb {
+    background: var(--blue);
+    border-radius: 4px;
+  }
+  
+  /* ---- SMOOTH SCROLL ---- */
+  html {
+    scroll-behavior: smooth;
+  }
+</style>
+</head>
+<body>
+
+<main id="main">
+
+<div class="page-head">
+  <h1 style="font-size:clamp(2rem,5vw,3rem);">⚙️ Settings</h1>
+  <p>Customize your Smart Recycling experience. All preferences are saved automatically to your browser.</p>
+</div>
+
+<section class="settings-page">
+  <div class="card">
+
+    <!-- ===== APPEARANCE ===== -->
+    <div class="settings-section">
+      <h3><span class="emoji">🎨</span> Appearance</h3>
+
+      <div class="setting-group">
+        <label for="settingsTheme">Theme</label>
+        <select id="settingsTheme">
+          <option value="light">☀️ Light</option>
+          <option value="dark">🌙 Dark</option>
+          <option value="auto">🔄 System (Auto)</option>
+        </select>
+        <span class="description">Choose between light, dark, or automatically follow your system preference.</span>
+      </div>
+
+      <div class="setting-group">
+        <label for="settingsFont">Font Size</label>
+        <select id="settingsFont">
+          <option value="small">Small</option>
+          <option value="normal">Normal</option>
+          <option value="large">Large</option>
+          <option value="xlarge">Extra Large</option>
+        </select>
+        <span class="description">Adjust text size for better readability across the entire site.</span>
+      </div>
+
+      <div class="setting-group">
+        <label for="settingsContrast">High Contrast</label>
+        <select id="settingsContrast">
+          <option value="off">Off</option>
+          <option value="on">On</option>
+        </select>
+        <span class="description">Increase contrast for better accessibility and readability.</span>
+      </div>
+
+      <div class="setting-group">
+        <label>Accent Color</label>
+        <div class="color-options" id="colorOptions">
+          <div class="color-option active" style="background:#4b7cff" data-color="#4b7cff"><span class="check">✓</span></div>
+          <div class="color-option" style="background:#2e7d32" data-color="#2e7d32"><span class="check">✓</span></div>
+          <div class="color-option" style="background:#e0455f" data-color="#e0455f"><span class="check">✓</span></div>
+          <div class="color-option" style="background:#f39c12" data-color="#f39c12"><span class="check">✓</span></div>
+          <div class="color-option" style="background:#8e44ad" data-color="#8e44ad"><span class="check">✓</span></div>
+          <div class="color-option" style="background:#1abc9c" data-color="#1abc9c"><span class="check">✓</span></div>
+        </div>
+        <span class="description">Choose your favorite accent color for buttons, highlights, and interactive elements.</span>
+      </div>
+
+      <div class="setting-group">
+        <div class="toggle-group">
+          <label class="toggle-switch">
+            <input type="checkbox" id="settingsAnimations" checked>
+            <span class="toggle-slider"></span>
+          </label>
+          <span class="toggle-label">Enable Animations</span>
+        </div>
+        <span class="description">Turn off animations for better performance or if you prefer reduced motion.</span>
+      </div>
+    </div>
+
+    <!-- ===== LANGUAGE & CONTENT ===== -->
+    <div class="settings-section">
+      <h3><span class="emoji">🌍</span> Language &amp; Content</h3>
+
+      <div class="setting-group">
+        <label for="settingsLanguage">Language</label>
+        <select id="settingsLanguage">
+          <option value="en">🇬🇧 English</option>
+          <option value="mt">🇲🇹 Maltese</option>
+          <option value="fr">🇫🇷 French</option>
+          <option value="es">🇪🇸 Spanish</option>
+          <option value="de">🇩🇪 German</option>
+          <option value="it">🇮🇹 Italian</option>
+          <option value="pt">🇵🇹 Portuguese</option>
+          <option value="nl">🇳🇱 Dutch</option>
+        </select>
+        <span class="description">Choose your preferred language for the interface and content.</span>
+      </div>
+
+      <div class="setting-group">
+        <label for="settingsName">Your Name</label>
+        <input type="text" id="settingsName" placeholder="Enter your name" maxlength="30">
+        <span class="description">This personalizes your experience in Recylo's story and the Eco Catch game.</span>
+      </div>
+    </div>
+
+    <!-- ===== GAME SETTINGS ===== -->
+    <div class="settings-section">
+      <h3><span class="emoji">🎮</span> Game Settings</h3>
+
+      <div class="setting-group">
+        <div class="toggle-group">
+          <label class="toggle-switch">
+            <input type="checkbox" id="settingsGameSound" checked>
+            <span class="toggle-slider"></span>
+          </label>
+          <span class="toggle-label">Game Sound</span>
+        </div>
+        <span class="description">Enable or disable sound effects in the Eco Catch game.</span>
+      </div>
+
+      <div class="setting-group">
+        <label for="settingsDifficulty">Game Difficulty</label>
+        <select id="settingsDifficulty">
+          <option value="easy">😊 Easy</option>
+          <option value="normal">🤔 Normal</option>
+          <option value="hard">😈 Hard</option>
+        </select>
+        <span class="description">Adjust the challenge level of Eco Catch. Hard mode has faster items and more trash!</span>
+      </div>
+    </div>
+
+    <!-- ===== AI & LEARNING ===== -->
+    <div class="settings-section">
+      <h3><span class="emoji">🧠</span> AI &amp; Learning</h3>
+
+      <div class="stat-grid" id="aiStats">
+        <div class="stat-item">
+          <span class="number" id="statConversations">0</span>
+          <span class="label">Conversations</span>
+        </div>
+        <div class="stat-item">
+          <span class="number" id="statFaq">0</span>
+          <span class="label">FAQ Items</span>
+        </div>
+        <div class="stat-item">
+          <span class="number" id="statLearned">0</span>
+          <span class="label">Learned Questions</span>
+        </div>
+        <div class="stat-item">
+          <span class="number" id="statCategories">0</span>
+          <span class="label">Categories</span>
+        </div>
+      </div>
+
+      <div class="setting-group">
+        <div class="toggle-group">
+          <label class="toggle-switch">
+            <input type="checkbox" id="settingsAILearning" checked>
+            <span class="toggle-slider"></span>
+          </label>
+          <span class="toggle-label">Enable AI Learning</span>
+        </div>
+        <span class="description">Allow EcoMind-01 to learn from your conversations and improve over time.</span>
+      </div>
+
+      <div class="setting-group">
+        <div class="settings-actions">
+          <button class="btn secondary" id="exportKnowledgeBtn">📤 Export Knowledge Base</button>
+          <button class="btn secondary" id="importKnowledgeBtn">📥 Import Knowledge Base</button>
+        </div>
+        <span class="description">Export all AI-learned data as JSON, or import previously exported data.</span>
+      </div>
+
+      <div class="export-area" id="exportArea">
+        <textarea id="exportText" readonly></textarea>
+        <div class="export-actions">
+          <button class="btn" id="copyExportBtn">📋 Copy</button>
+          <button class="btn success" id="downloadExportBtn">💾 Download</button>
+          <button class="btn secondary" id="closeExportBtn">Close</button>
+        </div>
+      </div>
+
+      <div class="export-area" id="importArea">
+        <textarea id="importText" placeholder="Paste your exported JSON data here..."></textarea>
+        <div class="export-actions">
+          <button class="btn warning" id="importConfirmBtn">⚠️ Import Data (Overwrites Current)</button>
+          <button class="btn secondary" id="closeImportBtn">Cancel</button>
+        </div>
+        <span class="description" style="color:#e0455f;margin-top:6px;">⚠️ This will REPLACE all current AI knowledge with the imported data.</span>
+      </div>
+    </div>
+
+    <!-- ===== DATA MANAGEMENT ===== -->
+    <div class="settings-section">
+      <h3><span class="emoji">💾</span> Data Management</h3>
+
+      <div class="setting-group">
+        <div class="settings-actions">
+          <button class="btn success" id="exportAllDataBtn">📦 Export All Data</button>
+          <button class="btn" id="importAllDataBtn">📥 Import All Data</button>
+        </div>
+        <span class="description">Export or import ALL your data including settings, game progress, and AI knowledge.</span>
+      </div>
+
+      <div class="export-area" id="allExportArea">
+        <textarea id="allExportText" readonly></textarea>
+        <div class="export-actions">
+          <button class="btn" id="copyAllExportBtn">📋 Copy</button>
+          <button class="btn success" id="downloadAllExportBtn">💾 Download</button>
+          <button class="btn secondary" id="closeAllExportBtn">Close</button>
+        </div>
+      </div>
+
+      <div class="export-area" id="allImportArea">
+        <textarea id="allImportText" placeholder="Paste your exported ALL DATA JSON here..."></textarea>
+        <div class="export-actions">
+          <button class="btn warning" id="allImportConfirmBtn">⚠️ Import All Data (Overwrites Everything)</button>
+          <button class="btn secondary" id="closeAllImportBtn">Cancel</button>
+        </div>
+        <span class="description" style="color:#e0455f;margin-top:6px;">⚠️ This will REPLACE ALL current data with the imported data.</span>
+      </div>
+
+      <div class="setting-group" style="margin-top:18px;">
+        <div class="danger-zone">
+          <h4>⚠️ Danger Zone</h4>
+          <p>These actions cannot be undone. Please be careful before proceeding.</p>
+
+          <div class="danger-actions">
+            <button class="btn danger" id="resetSettingsBtn">Reset All Settings</button>
+            <button class="btn danger" id="resetGameBtn">Reset Game Progress</button>
+            <button class="btn danger" id="resetAIBtn">Reset AI Knowledge</button>
+            <button class="btn danger" id="resetAllBtn">🔥 Reset EVERYTHING</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== ABOUT ===== -->
+    <div class="settings-section" style="border-bottom:none;margin-bottom:0;padding-bottom:0;">
+      <h3><span class="emoji">ℹ️</span> About</h3>
+      <p style="font-size:0.9rem;opacity:0.7;line-height:1.6;">
+        <strong>Smart Recycling v2.0</strong><br>
+        A student-built initiative for better recycling habits in schools.<br><br>
+        <strong>Data Privacy:</strong> All data is stored locally in your browser using localStorage.
+        No data is ever sent to any server. Everything stays on your device.<br><br>
+        <strong>Built with:</strong> HTML, CSS, JavaScript, Inter font, and lots of ♻️ love!
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- Toast Notification -->
+<div class="toast" id="toast"></div>
+
+</main>
+
+<script src="js/common.js"></script>
+<script>
+  document.addEventListener("shellReady", () => {
+
+    // ===== TOAST SYSTEM =====
+    const toast = document.getElementById('toast');
+    let toastTimeout;
+
+    function showToast(message, type = 'success') {
+      toast.textContent = message;
+      toast.className = 'toast';
+      if (type === 'error') toast.classList.add('error');
+      if (type === 'warning') toast.classList.add('warning');
+      
+      clearTimeout(toastTimeout);
+      void toast.offsetWidth;
+      toast.classList.add('show');
+      
+      toastTimeout = setTimeout(() => toast.classList.remove('show'), 3500);
+    }
+
+    // ===== MIRROR SETTINGS FROM SHARED CONTROLS =====
+    const settingsMap = [
+      { page: 'settingsTheme', shared: 'themeSelect' },
+      { page: 'settingsFont', shared: 'fontSelect' },
+      { page: 'settingsContrast', shared: 'contrastSelect' },
+      { page: 'settingsLanguage', shared: 'langSelect' },
+    ];
+
+    settingsMap.forEach(({ page, shared }) => {
+      const pageEl = document.getElementById(page);
+      const sharedEl = document.getElementById(shared);
+      if (!pageEl || !sharedEl) return;
+
+      pageEl.value = sharedEl.value;
+      pageEl.addEventListener('change', () => {
+        sharedEl.value = pageEl.value;
+        sharedEl.dispatchEvent(new Event('change'));
+        showToast('✅ Setting updated!');
+      });
+    });
+
+    // ===== NAME INPUT =====
+    const nameInput = document.getElementById('settingsName');
+    const storyNameInput = document.getElementById('storyNameInput');
+    if (nameInput && storyNameInput) {
+      nameInput.value = storyNameInput.value || localStorage.getItem('storyPlayerName') || '';
+      nameInput.addEventListener('change', () => {
+        storyNameInput.value = nameInput.value;
+        storyNameInput.dispatchEvent(new Event('change'));
+        localStorage.setItem('storyPlayerName', nameInput.value);
+        showToast('✅ Name saved!');
+      });
+    }
+
+    // ===== COLOR PICKER =====
+    const colorOptions = document.querySelectorAll('.color-option');
+    const currentColor = localStorage.getItem('accentColor') || '#4b7cff';
+
+    colorOptions.forEach(opt => {
+      opt.classList.toggle('active', opt.dataset.color === currentColor);
+      opt.addEventListener('click', () => {
+        colorOptions.forEach(o => o.classList.remove('active'));
+        opt.classList.add('active');
+        const color = opt.dataset.color;
+        localStorage.setItem('accentColor', color);
+        document.documentElement.style.setProperty('--blue', color);
+        document.documentElement.style.setProperty('--hover', color + '88');
+        // Also update in common.js
+        if (window.SmartRecycling) {
+          window.SmartRecycling.applyAccentColor(color);
+        }
+        showToast('🎨 Accent color updated!');
+      });
+    });
+
+    // Apply saved color
+    if (currentColor) {
+      document.documentElement.style.setProperty('--blue', currentColor);
+      document.documentElement.style.setProperty('--hover', currentColor + '88');
+    }
+
+    // ===== ANIMATIONS TOGGLE =====
+    const animToggle = document.getElementById('settingsAnimations');
+    const savedAnim = localStorage.getItem('animations') !== 'off';
+    animToggle.checked = savedAnim;
+
+    animToggle.addEventListener('change', () => {
+      localStorage.setItem('animations', animToggle.checked ? 'on' : 'off');
+      if (!animToggle.checked) {
+        document.querySelectorAll('.card, .stat-item, .color-option').forEach(el => {
+          el.style.transition = 'none';
+        });
+      } else {
+        document.querySelectorAll('.card, .stat-item, .color-option').forEach(el => {
+          el.style.transition = '';
+        });
+      }
+      showToast(animToggle.checked ? '✨ Animations enabled' : '⏸️ Animations disabled');
+    });
+
+    // Apply animation setting
+    if (!savedAnim) {
+      document.querySelectorAll('.card, .stat-item, .color-option').forEach(el => {
+        el.style.transition = 'none';
+      });
+    }
+
+    // ===== GAME SETTINGS =====
+    const gameSound = document.getElementById('settingsGameSound');
+    const gameDifficulty = document.getElementById('settingsDifficulty');
+
+    gameSound.checked = localStorage.getItem('gameSound') !== 'off';
+    gameDifficulty.value = localStorage.getItem('gameDifficulty') || 'normal';
+
+    gameSound.addEventListener('change', () => {
+      localStorage.setItem('gameSound', gameSound.checked ? 'on' : 'off');
+      showToast(gameSound.checked ? '🔊 Sound on' : '🔇 Sound off');
+    });
+
+    gameDifficulty.addEventListener('change', () => {
+      localStorage.setItem('gameDifficulty', gameDifficulty.value);
+      showToast('🎮 Difficulty: ' + gameDifficulty.value.charAt(0).toUpperCase() + gameDifficulty.value.slice(1));
+    });
+
+    // ===== AI STATS =====
+    function updateAIStats() {
+      try {
+        const knowledge = JSON.parse(localStorage.getItem('ecobot_knowledge') || '{}');
+        const conversations = parseInt(localStorage.getItem('ecobot_conversations') || '0');
+        const learned = Object.keys(knowledge.user_learning || {}).length;
+        const faq = (knowledge.faq || []).length;
+        const categories = Object.keys(knowledge.categories || {}).length;
+
+        document.getElementById('statConversations').textContent = conversations || 0;
+        document.getElementById('statFaq').textContent = faq || 0;
+        document.getElementById('statLearned').textContent = learned || 0;
+        document.getElementById('statCategories').textContent = categories || 0;
+      } catch (e) {
+        // Stats not available yet
+      }
+    }
+    updateAIStats();
+
+    // ===== AI LEARNING TOGGLE =====
+    const aiLearning = document.getElementById('settingsAILearning');
+    aiLearning.checked = localStorage.getItem('aiLearning') !== 'off';
+
+    aiLearning.addEventListener('change', () => {
+      localStorage.setItem('aiLearning', aiLearning.checked ? 'on' : 'off');
+      showToast(aiLearning.checked ? '🧠 AI learning enabled' : '🧠 AI learning disabled');
+    });
+
+    // ===== EXPORT KNOWLEDGE =====
+    const exportArea = document.getElementById('exportArea');
+    const exportText = document.getElementById('exportText');
+
+    document.getElementById('exportKnowledgeBtn').addEventListener('click', () => {
+      try {
+        const data = {
+          knowledge: JSON.parse(localStorage.getItem('ecobot_knowledge') || '{}'),
+          conversations: localStorage.getItem('ecobot_conversations') || '0',
+          feedback: JSON.parse(localStorage.getItem('ecobot_feedback') || '{}'),
+          exported: new Date().toISOString(),
+          version: '2.0'
+        };
+        exportText.value = JSON.stringify(data, null, 2);
+        exportArea.classList.add('show');
+        document.getElementById('importArea').classList.remove('show');
+        exportArea.scrollIntoView({ behavior: 'smooth' });
+        showToast('📤 Knowledge exported!');
+      } catch (e) {
+        showToast('❌ No knowledge data found', 'error');
+      }
+    });
+
+    document.getElementById('copyExportBtn').addEventListener('click', () => {
+      navigator.clipboard.writeText(exportText.value).then(() => {
+        showToast('📋 Copied to clipboard!');
+      }).catch(() => {
+        exportText.select();
+        document.execCommand('copy');
+        showToast('📋 Copied!');
+      });
+    });
+
+    document.getElementById('downloadExportBtn').addEventListener('click', () => {
+      const blob = new Blob([exportText.value], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `ecobot_knowledge_${new Date().toISOString().slice(0,10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast('💾 Download started!');
+    });
+
+    document.getElementById('closeExportBtn').addEventListener('click', () => {
+      exportArea.classList.remove('show');
+    });
+
+    // ===== IMPORT KNOWLEDGE =====
+    const importArea = document.getElementById('importArea');
+    const importText = document.getElementById('importText');
+
+    document.getElementById('importKnowledgeBtn').addEventListener('click', () => {
+      importArea.classList.add('show');
+      exportArea.classList.remove('show');
+      importArea.scrollIntoView({ behavior: 'smooth' });
+    });
+
+    document.getElementById('importConfirmBtn').addEventListener('click', () => {
+      try {
+        const data = JSON.parse(importText.value);
+        if (!data.knowledge) {
+          throw new Error('Invalid knowledge data format');
+        }
+        localStorage.setItem('ecobot_knowledge', JSON.stringify(data.knowledge));
+        if (data.conversations) localStorage.setItem('ecobot_conversations', data.conversations);
+        if (data.feedback) localStorage.setItem('ecobot_feedback', JSON.stringify(data.feedback));
+        updateAIStats();
+        importArea.classList.remove('show');
+        importText.value = '';
+        showToast('✅ Knowledge imported successfully!');
+      } catch (e) {
+        showToast('❌ Invalid JSON data. Please check your input.', 'error');
+      }
+    });
+
+    document.getElementById('closeImportBtn').addEventListener('click', () => {
+      importArea.classList.remove('show');
+      importText.value = '';
+    });
+
+    // ===== EXPORT ALL DATA =====
+    const allExportArea = document.getElementById('allExportArea');
+    const allExportText = document.getElementById('allExportText');
+
+    document.getElementById('exportAllDataBtn').addEventListener('click', () => {
+      try {
+        const allData = {
+          settings: {
+            theme: localStorage.getItem('theme'),
+            fontSize: localStorage.getItem('fontSize'),
+            contrast: localStorage.getItem('contrast'),
+            language: localStorage.getItem('lang'),
+            accentColor: localStorage.getItem('accentColor'),
+            animations: localStorage.getItem('animations'),
+            gameSound: localStorage.getItem('gameSound'),
+            gameDifficulty: localStorage.getItem('gameDifficulty'),
+            aiLearning: localStorage.getItem('aiLearning'),
+          },
+          game: {
+            achievements: JSON.parse(localStorage.getItem('ecoCatchAchievements') || '[]'),
+          },
+          story: {
+            playerName: localStorage.getItem('storyPlayerName'),
+          },
+          ai: {
+            knowledge: JSON.parse(localStorage.getItem('ecobot_knowledge') || '{}'),
+            conversations: localStorage.getItem('ecobot_conversations') || '0',
+            feedback: JSON.parse(localStorage.getItem('ecobot_feedback') || '{}'),
+          },
+          exported: new Date().toISOString(),
+          version: '2.0'
+        };
+        allExportText.value = JSON.stringify(allData, null, 2);
+        allExportArea.classList.add('show');
+        document.getElementById('allImportArea').classList.remove('show');
+        allExportArea.scrollIntoView({ behavior: 'smooth' });
+        showToast('📦 All data exported!');
+      } catch (e) {
+        showToast('❌ Error exporting data', 'error');
+      }
+    });
+
+    document.getElementById('copyAllExportBtn').addEventListener('click', () => {
+      navigator.clipboard.writeText(allExportText.value).then(() => {
+        showToast('📋 Copied to clipboard!');
+      }).catch(() => {
+        allExportText.select();
+        document.execCommand('copy');
+        showToast('📋 Copied!');
+      });
+    });
+
+    document.getElementById('downloadAllExportBtn').addEventListener('click', () => {
+      const blob = new Blob([allExportText.value], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `smart_recycling_data_${new Date().toISOString().slice(0,10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast('💾 Download started!');
+    });
+
+    document.getElementById('closeAllExportBtn').addEventListener('click', () => {
+      allExportArea.classList.remove('show');
+    });
+
+    // ===== IMPORT ALL DATA =====
+    const allImportArea = document.getElementById('allImportArea');
+    const allImportText = document.getElementById('allImportText');
+
+    document.getElementById('importAllDataBtn').addEventListener('click', () => {
+      allImportArea.classList.add('show');
+      allExportArea.classList.remove('show');
+      allImportArea.scrollIntoView({ behavior: 'smooth' });
+    });
+
+    document.getElementById('allImportConfirmBtn').addEventListener('click', () => {
+      try {
+        const data = JSON.parse(allImportText.value);
+        
+        // Import settings
+        if (data.settings) {
+          Object.entries(data.settings).forEach(([key, value]) => {
+            if (value !== null && value !== undefined) {
+              localStorage.setItem(key, value);
+            }
+          });
+        }
+        
+        // Import game
+        if (data.game && data.game.achievements) {
+          localStorage.setItem('ecoCatchAchievements', JSON.stringify(data.game.achievements));
+        }
+        
+        // Import story
+        if (data.story && data.story.playerName) {
+          localStorage.setItem('storyPlayerName', data.story.playerName);
+        }
+        
+        // Import AI
+        if (data.ai) {
+          if (data.ai.knowledge) localStorage.setItem('ecobot_knowledge', JSON.stringify(data.ai.knowledge));
+          if (data.ai.conversations) localStorage.setItem('ecobot_conversations', data.ai.conversations);
+          if (data.ai.feedback) localStorage.setItem('ecobot_feedback', JSON.stringify(data.ai.feedback));
+        }
+        
+        // Refresh UI
+        updateAIStats();
+        // Refresh settings controls
+        settingsMap.forEach(({ page, shared }) => {
+          const pageEl = document.getElementById(page);
+          const sharedEl = document.getElementById(shared);
+          if (pageEl && sharedEl) {
+            pageEl.value = sharedEl.value;
+          }
+        });
+        // Refresh name
+        const storyName = document.getElementById('storyNameInput');
+        if (storyName) {
+          document.getElementById('settingsName').value = storyName.value;
+        }
+        
+        allImportArea.classList.remove('show');
+        allImportText.value = '';
+        showToast('✅ All data imported successfully! Refreshing...');
+        setTimeout(() => location.reload(), 1500);
+      } catch (e) {
+        showToast('❌ Invalid JSON data. Please check your input.', 'error');
+      }
+    });
+
+    document.getElementById('closeAllImportBtn').addEventListener('click', () => {
+      allImportArea.classList.remove('show');
+      allImportText.value = '';
+    });
+
+    // ===== RESET FUNCTIONS =====
+    function resetWithConfirm(message, callback) {
+      if (confirm(message + '\n\nThis action cannot be undone!')) {
+        callback();
+        showToast('✅ Reset complete!');
+        setTimeout(() => location.reload(), 1200);
+      }
+    }
+
+    document.getElementById('resetSettingsBtn').addEventListener('click', () => {
+      resetWithConfirm('⚠️ Reset ALL settings to default?', () => {
+        ['theme', 'fontSize', 'contrast', 'lang', 'accentColor', 'animations', 'gameSound', 'gameDifficulty', 'aiLearning'].forEach(key => {
+          localStorage.removeItem(key);
+        });
+        // Reset shared controls
+        ['themeSelect', 'fontSelect', 'contrastSelect', 'langSelect'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) {
+            el.value = el.querySelector('option:first-child')?.value || '';
+            el.dispatchEvent(new Event('change'));
+          }
+        });
+        // Reset name
+        localStorage.removeItem('storyPlayerName');
+        document.getElementById('settingsName').value = '';
+        // Reset color
+        document.documentElement.style.setProperty('--blue', '#4b7cff');
+        document.documentElement.style.setProperty('--hover', '#4b7cff88');
+        colorOptions.forEach(o => o.classList.remove('active'));
+        document.querySelector('.color-option[data-color="#4b7cff"]')?.classList.add('active');
+        localStorage.removeItem('accentColor');
+      });
+    });
+
+    document.getElementById('resetGameBtn').addEventListener('click', () => {
+      resetWithConfirm('⚠️ Reset ALL game progress?', () => {
+        localStorage.removeItem('ecoCatchAchievements');
+      });
+    });
+
+    document.getElementById('resetAIBtn').addEventListener('click', () => {
+      resetWithConfirm('⚠️ Reset ALL AI knowledge?\n\nEcoMind-01 will forget everything it learned.', () => {
+        localStorage.removeItem('ecobot_knowledge');
+        localStorage.removeItem('ecobot_conversations');
+        localStorage.removeItem('ecobot_feedback');
+        updateAIStats();
+      });
+    });
+
+    document.getElementById('resetAllBtn').addEventListener('click', () => {
+      resetWithConfirm('🔥 RESET EVERYTHING?\n\nThis will delete ALL data including:\n• All settings\n• Game progress\n• AI knowledge\n• Your name\n\nThis cannot be undone!', () => {
+        // Clear all Smart Recycling related localStorage
+        const keys = ['theme', 'fontSize', 'contrast', 'lang', 'accentColor', 'animations', 
+                     'gameSound', 'gameDifficulty', 'aiLearning', 'storyPlayerName', 
+                     'ecoCatchAchievements', 'ecobot_knowledge', 'ecobot_conversations', 
+                     'ecobot_feedback'];
+        keys.forEach(key => localStorage.removeItem(key));
+        // Reset shared controls
+        ['themeSelect', 'fontSelect', 'contrastSelect', 'langSelect'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) {
+            el.value = el.querySelector('option:first-child')?.value || '';
+            el.dispatchEvent(new Event('change'));
+          }
+        });
+        // Reset color
+        document.documentElement.style.setProperty('--blue', '#4b7cff');
+        document.documentElement.style.setProperty('--hover', '#4b7cff88');
+        colorOptions.forEach(o => o.classList.remove('active'));
+        document.querySelector('.color-option[data-color="#4b7cff"]')?.classList.add('active');
+        document.getElementById('settingsName').value = '';
+        updateAIStats();
+      });
+    });
+
+  });
+</script>
+</body>
+</html>

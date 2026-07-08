@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Assistant — Smart Recycling</title>
+<link rel="icon" type="image/svg+xml" href="icons/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<main id="main">
+
+<div class="page-head">
+  <h1 style="font-size:clamp(2rem,5vw,3rem);">Smart Recycling AI — EcoMind-01</h1>
+  <p>EcoMind-01 helps students identify recyclable items, explains sorting rules, and provides instant guidance for reducing contamination.</p>
+</div>
+
+<section id="ai">
+  <div class="chatbot-box">
+    <div class="chatbot-header">Chat with EcoMind-01</div>
+    <div class="chatbot-sub">Ask what bin to use, how to clean items, or whether something is recyclable.</div>
+
+    <div class="chat-suggestions">
+      <button type="button">What bin does a plastic bottle go in?</button>
+      <button type="button">Where do batteries go?</button>
+      <button type="button">Tell me a joke</button>
+    </div>
+
+    <div id="chatWindow" class="chat-window"></div>
+
+    <div class="chat-input">
+      <input id="chatMessage" type="text" placeholder="Ask me anything about recycling...">
+      <button id="chatSend" type="button">Send</button>
+      <button id="chatClear" type="button">Clear</button>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<script src="js/common.js"></script>
+<script src="js/chatbot.js"></script>
+</body>
+</html>
