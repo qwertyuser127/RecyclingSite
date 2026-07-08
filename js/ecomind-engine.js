@@ -319,6 +319,7 @@ window.EcoMind = {
     if (this.isFarewell(query)) return this.respondFarewell();
     if (this.isThanks(query)) return this.respondThanks();
     if (this.isJoke(query)) return this.respondJoke();
+    if (this.isFunFact(query)) return this.respondFunFact();
 
     // Check for Malta schedule queries
     if (this.isScheduleQuery(query)) return this.respondSchedule(query);
@@ -341,6 +342,7 @@ window.EcoMind = {
   isFarewell(q) { return /^(bye|goodbye|see you|cya|later|ttyl|farewell)/i.test(q); },
   isThanks(q) { return /thanks|thank you|thx|appreciate/i.test(q); },
   isJoke(q) { return /joke|funny|laugh|humor|lol|haha/i.test(q); },
+  isFunFact(q) { return /fun|fact/i.test(q); },
   isScheduleQuery(q) { return /schedule|collection|pickup|when|day|bin day/i.test(q); },
   isItemQuery(q) { return /recyclable|where does|which bin|can i recycle/i.test(q); },
   isCategoryQuery(q) { return /plastic|glass|paper|metal|organic|ewaste|battery|clothing|hazard/i.test(q); },
@@ -397,6 +399,23 @@ window.EcoMind = {
     };
   },
 
+  respondFunFact() {
+    const facts = [
+      "Recycling one aluminum can saves enough energy to power a laptop for 3 hours!",
+      "Plastic takes 400+ years to decompose in landfill.",
+      "An average family can recycle 4 pounds of materials annually.",
+      "Making new paper from recycled paper saves 40% of the water used for virgin paper.",
+      "In Malta, over 30% of school recycling is lost due to contamination.",
+      "Recycling steel and tin cans conserves 76% of the energy needed to make new cans.",
+      "One recycled glass bottle can reduce energy use by 40% compared to making a new bottle.",
+      "Textiles are the 4th largest waste stream in most countries."
+    ];
+    return {
+      reply: facts[Math.floor(Math.random() * facts.length)],
+      confidence: CONFIDENCE_LEVELS.CERTAIN
+    };
+  },
+
   respondSchedule(query) {
     const scheduleInfo = {
       monday: "Organic waste (white bag)",
@@ -405,7 +424,7 @@ window.EcoMind = {
       tuesday: "Mixed waste (black bag)",
       saturday: "Mixed waste (black bag)",
       thursday: "Recyclables: paper, cardboard, plastic, metals (grey bag)",
-      glass: "1st and 3rd Friday ONLY (not weekly)",
+      glass: "1st and 3rd Friday of the month only.",
     };
 
     // Check which day
@@ -656,21 +675,7 @@ window.EcoMind = {
     return content;
   },
 
-  // Get fun fact
-  getFunFact() {
-    const facts = [
-      "Recycling one aluminum can saves enough energy to power a laptop for 3 hours!",
-      "Plastic takes 400+ years to decompose in landfill.",
-      "An average family can recycle 4 pounds of materials annually.",
-      "Making new paper from recycled paper saves 40% of the water used for virgin paper.",
-      "In Malta, over 30% of school recycling is lost due to contamination.",
-      "Recycling steel and tin cans conserves 76% of the energy needed to make new cans.",
-      "One recycled glass bottle can reduce energy use by 40% compared to making a new bottle.",
-      "Textiles are the 4th largest waste stream in most countries.",
-    ];
-    return facts[Math.floor(Math.random() * facts.length)];
-  }
-};
+
 
 // Initialize on load
 document.addEventListener("DOMContentLoaded", () => {
