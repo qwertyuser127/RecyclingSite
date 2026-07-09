@@ -1,10 +1,62 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <circle cx="50" cy="50" r="48" fill="#eafff0"/>
-  <circle cx="50" cy="50" r="48" fill="none" stroke="#2e7d32" stroke-width="3"/>
-  <g fill="#2e7d32">
-    <path d="M50 20 L62 42 L38 42 Z"/>
-    <path d="M78 65 L66 87 L60 76 L72 55 Z"/>
-    <path d="M22 65 L34 55 L46 76 L40 87 Z"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="256" viewBox="0 0 512 256" xmlns="http://www.w3.org/2000/svg">
+
+  <!-- Recycling symbol -->
+  <g transform="translate(40,40)" fill="#000000">
+    <!-- Top arrow -->
+    <path d="
+      M80 0
+      L120 40
+      L105 40
+      L120 75
+      L85 90
+      L70 55
+      L55 55
+      Z
+    "/>
+
+    <!-- Right arrow -->
+    <path d="
+      M120 95
+      L140 135
+      L125 135
+      L140 170
+      L105 185
+      L90 150
+      L75 150
+      Z
+    "/>
+
+    <!-- Left arrow -->
+    <path d="
+      M40 95
+      L55 130
+      L40 130
+      L55 165
+      L20 180
+      L0 140
+      L15 140
+      Z
+    "/>
   </g>
-  <circle cx="50" cy="55" r="12" fill="#4b7cff"/>
+
+  <!-- Text: smart recycling (vector shapes approximation) -->
+  <!-- For simplicity and editability, this uses a font; if you truly want
+       every letter as paths, this can be converted in a vector editor. -->
+  <text x="200" y="110"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="40"
+        font-weight="bold"
+        fill="#000000">
+    smart
+  </text>
+
+  <text x="200" y="160"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="40"
+        font-weight="bold"
+        fill="#000000">
+    recycling
+  </text>
+
 </svg>
